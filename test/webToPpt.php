@@ -6,11 +6,12 @@
  * Time: 10:57 AM
  */
 set_time_limit(0);
-error_reporting(0);
-ini_set('memory_limit','2G');
-include "../src/vendor/autoload.php";
+//error_reporting(0);
+ini_set('memory_limit', '2G');
+include __DIR__ . "/../vendor/autoload.php";
 
 $pptxFile = __DIR__ . '/xcoutput.pptx';
+
 $outputFile = __DIR__ . '/xc.json';
 #打开 ppt
 $readers = [
@@ -19,53 +20,41 @@ $readers = [
     'pptx' => 'PowerPoint2007',
     'phppt' => 'Serialized',
 ];
-$data = file_get_contents($outputFile);
-print_r($data);
-exit;
-$oReader = new \PhpOffice\PhpPresentation\PhpPresentation();
-$ppt = $oReader->load($pptxFile);
-#文档属性
-$dp = $ppt->getDocumentProperties();
-$dp->getTitle();
-$dp->getCreator();
-$dp->getLastModifiedBy();
+$data = json_decode(file_get_contents($outputFile), true);
+$SlidePageData = $data['SlidePageData'];
+$isSetAnimationAllPage = $data['SlidePageData']['isSetAnimationAllPage'];
+$isSetBackgroundAllPage = $data['SlidePageData']['isSetBackgroundAllPage'];
+$backgroundType = $data['SlidePageData']['backgroundType'];
+$backgroundColor = $data['SlidePageData']['backgroundColor'];
+$backgroundImage = $data['SlidePageData']['backgroundImage'];
 
-#ppt 属性
-$pp = $ppt->getPresentationProperties();
-$pp->getLastView();
-$pp->getZoom();
-$pp->isMarkedAsFinal();
+$objPHPPresentation = new \PhpOffice\PhpPresentation\PhpPresentation();
+$valid = new \BudWebSlide\ValidChecker();
+$valid->handle($data);
+$i = 0;
+$count  = count($data['EditData']);
+for ($i = 0; $i < $count; $i++) {
+    $Page = $data['EditData'][$i];
+    // Create slide
+    if ($i == 0) {
+        $currentSlide = $objPHPPresentation->getActiveSlide();
 
-#布局
-$layout = $ppt->getLayout();
-$cx = $layout->getCX();
-$cy = $layout->getCY();
-//print_r([$cx, $cy]);
+    } else {
+        $currentSlide = $objPHPPresentation->createSlide();
+    }
+    \BudWebSlide\Slide::setBackground($currentSlide, $data['SlidePageData'], $i);
+    foreach ($Page as $item) {
+        if ($item['type'] == 'img') {
+            \BudWebSlide\Shape\ImageShape::fromWeb2Ppt($currentSlide, $item);
+        }
 
-#获取 ppt 页数
-$slideCount = $ppt->getSlideCount();
-
-$slides = $ppt->getAllSlides();
-foreach ($slides as $slide)
-{
-    $slide->getBackground();
-    $slide->getAnimations();
-    $slide->getName();
-    $slide->getNote();
-    $sc = $slide->getShapeCollection();
-    foreach ($sc->getIterator() as $sci)
-    {
+        if ($item['type'] == 'word') {
+            \BudWebSlide\Shape\TextShape::fromWeb2Ppt($currentSlide, $item);
+        }
     }
 }
-#获取当前页的元素
 
-#获取元素的样式
-
-
-
-#打开 ppt
-#获取 ppt 页数
-
-#获取当前页的元素
-
-#获取元素的样式
+//    echo count($objPHPPresentation->getAllSlides());exit;
+$oWriterPPTX = \PhpOffice\PhpPresentation\IOFactory::createWriter($objPHPPresentation, 'PowerPoint2007');
+@unlink($pptxFile);
+$oWriterPPTX->save($pptxFile);

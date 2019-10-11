@@ -8,7 +8,7 @@
 set_time_limit(0);
 error_reporting(0);
 ini_set('memory_limit','2G');
-include "../src/vendor/autoload.php";
+include __DIR__ . "/../vendor/autoload.php";
 
 $pptxFile = __DIR__ . '/shuyishu.pptx';
 $outputFile = __DIR__ . '/output.json';
