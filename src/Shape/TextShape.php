@@ -11,7 +11,7 @@ namespace BudWebSlide\Shape;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Color;
 
-class TextShape implements ShapeInterface
+class TextShape extends ShapeBase implements ShapeInterface
 {
     public static $textAligns = [
         'left' => Alignment::HORIZONTAL_LEFT,
@@ -30,11 +30,9 @@ class TextShape implements ShapeInterface
         // TODO: Implement fromWeb2Ppt() method.
 
         // Create a shape (text)
-        $shape = $currentSlide->createRichTextShape()
-            ->setHeight($item['style']['height'])
-            ->setWidth($item['style']['width'])
-            ->setOffsetX($item['style']['left'])
-            ->setOffsetY($item['style']['top']);
+        $shape = $currentSlide->createRichTextShape();
+
+        $shape = self::setShapeBasic($shape, $item);
 
         if (isset($item['style']['textAlign'])) {
             $align = self::$textAligns[$item['style']['textAlign']] ?? Alignment::HORIZONTAL_GENERAL;

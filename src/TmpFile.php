@@ -38,7 +38,7 @@ class TmpFile
         $tmpfileName = md5($url);
 
         $imageFilePath = self::$tmpFilePath . DIRECTORY_SEPARATOR . $tmpfileName . '.png';
-        if (! file_exists($imageFilePath)) {
+        if (! file_exists($imageFilePath) || filesize($imageFilePath) < 1) {
             $content = file_get_contents($url);
             file_put_contents($imageFilePath, $content);
         }

@@ -33,6 +33,9 @@ $valid = new \BudWebSlide\ValidChecker();
 $valid->handle($data);
 $i = 0;
 $count  = count($data['EditData']);
+$dl = new \PhpOffice\PhpPresentation\DocumentLayout();
+$dl->setDocumentLayout(\PhpOffice\PhpPresentation\DocumentLayout::LAYOUT_SCREEN_16X9);
+$objPHPPresentation->setLayout($dl);
 for ($i = 0; $i < $count; $i++) {
     $Page = $data['EditData'][$i];
     // Create slide
@@ -42,6 +45,7 @@ for ($i = 0; $i < $count; $i++) {
     } else {
         $currentSlide = $objPHPPresentation->createSlide();
     }
+
     \BudWebSlide\Slide::setBackground($currentSlide, $data['SlidePageData'], $i);
     foreach ($Page as $item) {
         if ($item['type'] == 'img') {
@@ -52,6 +56,7 @@ for ($i = 0; $i < $count; $i++) {
             \BudWebSlide\Shape\TextShape::fromWeb2Ppt($currentSlide, $item);
         }
     }
+
 }
 
 //    echo count($objPHPPresentation->getAllSlides());exit;
