@@ -15,18 +15,18 @@ class TmpFile
     static $instance = null;
     static $tmpFilePath = '/tmp/budppt/';
 
-    public function __construct()
+    public function __construct($tmpFilePath = '/tmp/budppt/')
     {
-//        self::$tmpFilePath = sys_get_temp_dir() . '/budppt/' . uniqid('', false);
+        self::$tmpFilePath = $tmpFilePath;
         if (! @mkdir(self::$tmpFilePath, 0777, true) && ! is_dir(self::$tmpFilePath)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', self::$tmpFilePath));
         }
     }
 
-    public static function getInstance()
+    public static function getInstance($tmpFilePath = '/tmp/budppt/')
     {
         if (empty(self::$instance)) {
-            self::$instance = new self();
+            self::$instance = new self($tmpFilePath);
         }
 
         return self::$instance;
