@@ -64,10 +64,12 @@ class PptConvert
         }
 
         $oWriterPPTX = \PhpOffice\PhpPresentation\IOFactory::createWriter($objPHPPresentation, self::$readers[$type]);
+
         @unlink($tmpfilePath);
         $oWriterPPTX->save($tmpfilePath);
-
-        return file_get_contents($tmpfilePath);
+        $data = file_get_contents($tmpfilePath);
+        @unlink($tmpfilePath);
+        return $data;
     }
 
     public function pptToWeb($pptFile, $type = 'pptx', $tmpfilePath = '/tmp/budpptconvert/')
