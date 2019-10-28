@@ -11,8 +11,16 @@ https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Comp
 
 header("Content-Type: application/vnd.openxmlformats-officedocument.presentationml.presentation");
 $data = file_get_contents($webPptData);
+$data = json_encode($data, true);
 $convert = new PptConvert();
 $pptx = $convert->webToPpt($data, 'pptx', '/tmp/budpptconvert.pptx');
+
+$size = strlen($pptx);
+$filename = 'download.pptx';
+
+header("Content-length: $size");
+header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
 echo $pptx;
 ```
 ## ppt2web
