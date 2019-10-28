@@ -1,4 +1,24 @@
 {
+  "name":"knowbox/bud-slide",
+  "type": "library",
+  "description": "a lib for output pptx file from online format slides",
+  "keywords": [
+    "alipay",
+    "gateway",
+    "merchant",
+    "omnipay",
+    "pay",
+    "payment",
+    "purchase"
+  ],
+  "homepage": "https://github.com/Knowbox-dev/bud-slide",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "php-cpm",
+      "email": "zouyi@knowbox.cn"
+    }
+  ],
   "require": {
     "phpoffice/phppresentation": "dev-develop",
     "ext-zip": "*",
@@ -12,5 +32,7 @@
     "psr-4": {
       "BudWebSlide\\" : "./src"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
