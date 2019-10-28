@@ -39,24 +39,24 @@ class TextShape extends ShapeBase implements ShapeInterface
             $shape->getActiveParagraph()->getAlignment()->setHorizontal($align);
 
         }
-        echo '原文本:'. $item['content']. "\r\n";
+//        echo '原文本:'. $item['content']. "\r\n";
         $content = trim(preg_replace('/\<br(\s*)?\/?\>/i', PHP_EOL, $item['content']));
         if (empty($content)) {
             return null;
         }
 
-        echo '写入文本:'. $content. "\r\n";
+//        echo '写入文本:'. $content. "\r\n";
         $textRun = $shape->createTextRun($content);
 
         if (isset($item['style']['fontFamily'])) {
-            echo '设置颜色:'. $item['style']['fontFamily']. "\r\n";
+//            echo '设置颜色:'. $item['style']['fontFamily']. "\r\n";
             $textRun->getFont()->setName($item['style']['fontFamily']);
         }
 
         if (isset($item['style']['color'])) {
             $color = 'FF' . ltrim($item['style']['color'], '#');
 
-            echo '设置颜色:'. $color. "\r\n";
+//            echo '设置颜色:'. $color. "\r\n";
             $textRun->getFont()->setColor(new Color($color));
         }
 
@@ -65,7 +65,7 @@ class TextShape extends ShapeBase implements ShapeInterface
         }
 
         if (isset($item['style']['fontSize'])) {
-            echo '设置大小:'. $item['style']['fontSize']. "\r\n";
+//            echo '设置大小:'. $item['style']['fontSize']. "\r\n";
             $textRun->getFont()->setSize((int)$item['style']['fontSize']);
         }
 

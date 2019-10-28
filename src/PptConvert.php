@@ -51,7 +51,7 @@ class PptConvert
 
             \BudWebSlide\Slide::setBackground($currentSlide, $data['SlidePageData'], $i);
             foreach ($Page as $item) {
-                echo json_encode($item) . "\r\n";
+//                echo json_encode($item) . "\r\n";
                 if ($item['type'] == 'img') {
                     \BudWebSlide\Shape\ImageShape::fromWeb2Ppt($currentSlide, $item);
                 }
