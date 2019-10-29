@@ -21,7 +21,7 @@ class Slide
     public static function setBackground(&$slide, $data, $index)
     {
         if ($data['isSetBackgroundAllPage']) {
-            return self::setBackGroundOnData($slide, $data);
+            self::setBackGroundOnData($slide, $data);
         }
 
         return self::setBackGroundOnData($slide, $data['pages'][$index]);
@@ -34,7 +34,7 @@ class Slide
     public static function setBackGroundOnData(&$slide, $data)
     {
         if ($data['backgroundType'] == 0) {
-            return $slide->setBackground(null);
+            return true;
         }
         if ($data['backgroundType'] == 1) {
             $bg = new Color();
