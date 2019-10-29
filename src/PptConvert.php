@@ -49,6 +49,7 @@ class PptConvert
                 $currentSlide = $objPHPPresentation->createSlide();
             }
 
+            \BudWebSlide\Slide::setTransition($currentSlide, $data['SlidePageData'], $i);
             \BudWebSlide\Slide::setBackground($currentSlide, $data['SlidePageData'], $i);
             foreach ($Page as $item) {
 //                echo json_encode($item) . "\r\n";
