@@ -16,7 +16,10 @@ class ValidChecker
 
     public function handle($data)
     {
-        if(count($data['EditData']) == count($data['SlidePageData']['nodes']) && count($data['SlidePageData']['pages']) == count($data['SlidePageData']['nodes'])) {
+        if(empty($data['SlidePageData']['nodes'])){
+            return true;
+        }
+        if(count($data['EditData']) == count($data['SlidePageData']['pages'])) {
             return true;
         }
         $this->error('解析数据异常，页数不匹配');

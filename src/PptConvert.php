@@ -35,12 +35,12 @@ class PptConvert
         $valid = new \BudWebSlide\ValidChecker();
         $valid->handle($data);
         $i = 0;
-        $count = count($data['EditData']);
+        $count = count($data['SlidePageData']['pages']);
         $dl = new \PhpOffice\PhpPresentation\DocumentLayout();
         $dl->setDocumentLayout(\PhpOffice\PhpPresentation\DocumentLayout::LAYOUT_SCREEN_16X9);
         $objPHPPresentation->setLayout($dl);
         for ($i = 0; $i < $count; $i++) {
-            $Page = $data['EditData'][$i];
+            $Page = $data['EditData'][$i] ?? [];
             // Create slide
             if ($i == 0) {
                 $currentSlide = $objPHPPresentation->getActiveSlide();
@@ -51,6 +51,8 @@ class PptConvert
 
             \BudWebSlide\Slide::setTransition($currentSlide, $data['SlidePageData'], $i);
             \BudWebSlide\Slide::setBackground($currentSlide, $data['SlidePageData'], $i);
+
+            if(empty($Page)) continue;
             foreach ($Page as $item) {
 //                echo json_encode($item) . "\r\n";
                 if ($item['type'] == 'img') {
