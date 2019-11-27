@@ -25,6 +25,14 @@ class TextShape extends ShapeBase implements ShapeInterface
         // TODO: Implement fromPpt2Web() method.
     }
 
+    public static function trimHtmlText($content)
+    {
+        $content = preg_replace('/\<br(\s*)?\/?\>/i', PHP_EOL, $content);
+        $content = preg_replace('/\<\/div\>(\s*)?\<div.*?\>/i', PHP_EOL, $content);
+        $content = preg_replace('/\<\/div\>/i', '', $content);
+        $content = preg_replace('/\<div.*?\>/i', '', $content);
+        return trim($content);
+    }
     public static function fromWeb2Ppt(&$currentSlide, $item)
     {
         // TODO: Implement fromWeb2Ppt() method.
@@ -40,7 +48,7 @@ class TextShape extends ShapeBase implements ShapeInterface
 
         }
 //        echo '原文本:'. $item['content']. "\r\n";
-        $content = trim(preg_replace('/\<br(\s*)?\/?\>/i', PHP_EOL, $item['content']));
+        $content = self::trimHtmlText($item['content']);
         if (empty($content)) {
             return null;
         }
